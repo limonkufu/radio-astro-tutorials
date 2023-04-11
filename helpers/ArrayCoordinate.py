@@ -18,15 +18,19 @@ class MidPositions:
     """ Class to deal with array properties for MID          """
     """ Expectation of data in x,y,z earth centric coordsys  """
 
-    def __init__(self, datafile: str, dish_type: str = '', max_range: float = 10000000.0):
-        self.datafile = datafile  # -- Expectation of data in x,y,z earth centric coordsys 
+    def __init__(self, datafile: str, dish_type: str = '', max_range: float = -1.0):
+        self.datafile = datafile
+        if self.datafile == '':
+            print('No Array Coordinate initalised, using default of AncillData/mid_array_coords.dat')
+            self.datafile = 'AncillData/mid_array_coords.dat'  # -- Expectation of data in x,y,z earth centric coordsys
         self.dish_type = dish_type  # -- MK or SKA dishes
         self.max_range = max_range # -- distance from geographic centre for 'core' type calcs
     
     def array_dict(self):
+        print(self.datafile)
         mid_positions = np.genfromtxt(self.datafile, 
-                              names = ['arr_x','arr_y','arr_z','diam','station'], 
-                              dtype = 'f8,f8,f8,f8,U6')
+                            names = ['arr_x','arr_y','arr_z','diam','station'], 
+                            dtype = 'f8,f8,f8,f8,U6')
 
         #--- Separate MK & SKA dishes as required
         dishes = {}
@@ -70,8 +74,7 @@ class MidPositions:
         return {'ave_x': ave_arr_x, 'ave_y': ave_arr_y, 'ave_z': ave_arr_z}
 
 
-# ska_dishes = MidPositions('mid_array_coords.dat','SKA',1000.0)
-
+# ska_dishes = MidPositions(datafile='',dish_type='SKA',max_range=1000.0)
 
 # print(ska_dishes.array_ave_position())
 
