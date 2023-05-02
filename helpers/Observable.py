@@ -88,7 +88,7 @@ class Observable:
         ax_rs.set_ylabel('Altitude [deg]')
         ax_rs.hlines(y = 15.0, xmin = 0, xmax = len(obs_time_delta), linestyle = '--', color = 'k', label='elevation limit')
         ax_rs.set_xlim([0.0,len(obs_time_delta)])
-        ax_rs.set_ylim([-90.0,90.0])
+        ax_rs.set_ylim([0.0,90.0])
 
         for target_name, target_coord in target_dict.items():
             """Conver coords to astropy Skycoord instance"""
