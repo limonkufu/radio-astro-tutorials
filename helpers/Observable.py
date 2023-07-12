@@ -3,9 +3,9 @@ import re
 import numpy as np
 from astropy.time import Time
 from datetime import datetime
-from ArrayCoordinate import MidPositions, LowPositions
+from helpers.ArrayCoordinate import MidPositions, LowPositions
 from astropy.coordinates import AltAz, EarthLocation, SkyCoord, ICRS, Longitude
-from TimeRange import TimeRange
+from helpers.TimeRange import TimeRange
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 
@@ -40,7 +40,7 @@ class Observable:
         
         if desired_array == 'Mid':
             print("Array:"+desired_array+"\nUsing only SKA dishes ")
-            dishes = MidPositions('../AncillData/mid_array_coords.dat','SKA')
+            dishes = MidPositions('AncillData/mid_array_coords.dat','SKA')
             average_position = dishes.array_ave_position()
             geographic_location = EarthLocation.from_geocentric(average_position['ave_x'],
                                                                 average_position['ave_y'],
@@ -51,7 +51,7 @@ class Observable:
             
         elif desired_array == 'Low':
             print("Array:"+desired_array)
-            station = LowPositions('../AncillData/low_array_coords.dat')
+            station = LowPositions('AncillData/low_array_coords.dat')
             average_position = station.array_ave_position()
             geographic_location = EarthLocation.from_geocentric(average_position['ave_x'],
                                                                 average_position['ave_y'],
@@ -69,8 +69,6 @@ class Observable:
                               obs_period_unit = self.obs_period_unit, 
                               utcoffset= utcoffset,
                               plotsteps = int(self.obs_period*10.))
-        
-        
 
         # obs_time_delta = obs_time.obs_period_delta()
         return obs_time, geographic_location, time_zone
@@ -90,7 +88,7 @@ class Observable:
         ax_rs.set_ylabel('Altitude [deg]')
         ax_rs.hlines(y = 15.0, xmin = 0, xmax = len(obs_time_delta), linestyle = '--', color = 'k', label='elevation limit')
         ax_rs.set_xlim([0.0,len(obs_time_delta)])
-        ax_rs.set_ylim([-90.0,90.0])
+        ax_rs.set_ylim([0.0,90.0])
 
         for target_name, target_coord in target_dict.items():
             """Conver coords to astropy Skycoord instance"""
@@ -123,6 +121,7 @@ class Observable:
             target_azel = target_coord_sky.transform_to(AltAz(obstime = obs_time_delta,
                                                     location = geographic_location))
             
+            
         
             print(target_name)
             index_above_ellim = np.where(np.asarray(target_azel.alt.value) >= ellim)[0]
@@ -153,13 +152,13 @@ class Observable:
 ########------------------------------###########
 
 
-target_dict = {'1646-50': "21:08:46.86357 -50:44:48.37", 
-               '1934-638': "19:39:25.026 -63:42:45.63", 
-               '1921-293': "19:24:51.055957 -29:14:30.121150",
-               'sdc335': "16:30:58.638 -48:43:51.70"}
+# target_dict = {'1646-50': "21:08:46.86357 -50:44:48.37", 
+#                '1934-638': "19:39:25.026 -63:42:45.63", 
+#                '1921-293': "19:24:51.055957 -29:14:30.121150",
+#                'sdc335': "16:30:58.638 -48:43:51.70"}
 
-test_Obs = Observable('Mid',target_dict,'2023-7-5 10:00:01',102.0, 'h')
-print(test_Obs.provide_rise_set())
+# test_Obs = Observable('Mid',target_dict,'2023-7-5 10:00:01',102.0, 'h')
+# print(test_Obs.provide_rise_set())
 
 
 # obs_time = TimeRange(obs_period_start = '2023-7-5 10:00:01', 
