@@ -1,0 +1,9 @@
+name: fftnb
+channels:
+  - defaults
+dependencies:
+  - python=3.12
+  - ipykernel
+  - notebook
+  - scipy
+  - matplotlib
