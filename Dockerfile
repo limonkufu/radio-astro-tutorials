@@ -1,4 +1,4 @@
-FROM artefact.skao.int/ska-tango-images-pytango-builder:9.3.28
+FROM artefact.skao.int/ska-tango-images-pytango-builder:9.4.3
 
 COPY . ./
 
