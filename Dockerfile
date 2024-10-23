@@ -21,6 +21,6 @@ RUN pip install --no-cache-dir notebook jupyterlab
 COPY requirements.txt /tmp/
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
 
-RUN pip install --no-cache-dir ipywidgets numpy matplotlib scipy
+RUN pip install --no-cache-dir ipywidgets numpy matplotlib scipy ipycanvas
 
 COPY . ${HOME}/
